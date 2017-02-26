@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record model="ir.action.report" id="holidays_list">
+            <field name="name">Holidays List</field>
+            <field name="model"></field>
+            <field name="report_name">holidays.ocurrences_list</field>
+            <field name="report">holidays/report/calendar.ods</field>
+            <field name="template_extension">ods</field>
+        </record>
+
+        <record model="ir.action.keyword" id="holidays_list_print">
+            <field name="keyword">form_print</field>
+            <field name="model">holidays.calendar,-1</field>
+            <field name="action" ref="holidays_list"/>
+        </record>
+    </data>
+</tryton>
