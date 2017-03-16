@@ -57,5 +57,6 @@ class OcurrencesList(Report):
                                                    to_date=datetime.date.today()+relativedelta.relativedelta(years=2)))
 
         report_context['ocurrences'] = ocurrences
+        report_context['title'] = ' '.join([r.name for r in records])
 
         return report_context

@@ -2,7 +2,8 @@
 # this repository contains the full copyright notices and license terms.
 import uuid
 from dateutil import rrule, relativedelta
-from dateutil.rrule import weekday
+from dateutil.rrule import weekday, weekdays
+from itertools import groupby
 
 import datetime
 
@@ -21,7 +22,6 @@ __all__ = ['Calendar',
      'RRuleMixin', 'EventRRule', 'EventExRule']
 
 
-weekdays = tuple([weekday(x) for x in range(7)])
 _weekday_map = {"MO": 0, "TU": 1, "WE": 2, "TH": 3,
                     "FR": 4, "SA": 5, "SU": 6}
 
@@ -121,6 +121,21 @@ class Calendar(ModelSQL, ModelView):
         for e in self.events:
             if e.status not in ['cancelled',]:
                 rs += e.event2dates(from_date=from_date, to_date=to_date)
+        return rs
+
+    def calendar2alldates(self, from_date=datetime.date.today(),
+                            to_date=datetime.date.today()+relativedelta.relativedelta(years=1)):
+        '''
+        Get datetime instances values of all events objects of a calendar and his parents
+        '''
+        rs = []
+        ids = [self]
+        id = self.parent
+        while id:
+                ids.append(id)
+                id = id.parent
+        for calendar in ids:
+            rs = [k for k, _ in groupby(sorted(rs + calendar.calendar2dates(from_date=from_date, to_date=to_date)))]
         return rs
 
     def calendar2dictdates(self, from_date=datetime.date.today(),
