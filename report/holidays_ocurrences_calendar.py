@@ -47,9 +47,7 @@ class OcurrencesList(Report):
                 cal_ids += [Calendar(id).parent]
                 id = Calendar(id).parent
 
-        calendaries = Calendar.search([
-                    ('id', 'in', cal_ids),
-                ], order=[('id', 'ASC')])
+        calendaries = [Calendar(i) for i in sorted(cal_ids)]
 
         ocurrences = {}
         for c in calendaries:
