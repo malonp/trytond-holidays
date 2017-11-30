@@ -44,10 +44,10 @@ class OcurrencesList(Report):
 
         for id in data['ids']:
             while Calendar(id).parent:
-                cal_ids += [Calendar(id).parent]
+                cal_ids += [Calendar(id).parent.id]
                 id = Calendar(id).parent
 
-        calendaries = [Calendar(i) for i in sorted(cal_ids)]
+        calendaries = [Calendar(i) for i in set(cal_ids)]
 
         ocurrences = {}
         for c in calendaries:
