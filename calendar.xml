@@ -15,6 +15,8 @@ this repository contains the full copyright notices and license terms. -->
             <field name="path">icons/calendar-with-squares.svg</field>
         </record>
 
+<!-- Configuration administration group -->
+
         <record model="res.group" id="group_calendar_admin">
             <field name="name">Holidays Administration</field>
         </record>
@@ -28,6 +30,8 @@ this repository contains the full copyright notices and license terms. -->
             <field name="user" ref="res.user_trigger"/>
             <field name="group" ref="group_calendar_admin"/>
         </record>
+
+<!-- Form View -->
 
         <record model="ir.ui.view" id="calendar_view_form">
             <field name="model">holidays.calendar</field>

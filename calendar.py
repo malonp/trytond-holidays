@@ -1,5 +1,25 @@
-# This file is part of Tryton.  The COPYRIGHT file at the top level of
-# this repository contains the full copyright notices and license terms.
+##############################################################################
+#
+#    GNU Condo: The Free Management Condominium System
+#    Copyright (C) 2016- M. Alonso <port02.server@gmail.com>
+#
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
+
 import uuid
 from dateutil import rrule, relativedelta
 from dateutil.rrule import weekday, weekdays
@@ -12,7 +32,6 @@ from sql import Null
 from trytond.model import Model, ModelSQL, ModelView, fields, Check, Unique
 from trytond.tools import reduce_ids, grouped_slice
 from trytond.transaction import Transaction
-from trytond.cache import Cache
 from trytond.pool import Pool
 
 
@@ -63,7 +82,6 @@ class Calendar(ModelSQL, ModelView):
             'calendar', 'user', 'Read Users')
     write_users = fields.Many2Many('holidays.calendar-write-res.user',
             'calendar', 'user', 'Write Users')
-    _get_name_cache = Cache('holidays_calendar.get_name')
     events = fields.One2Many('holidays.event', 'calendar', 'Events')
 
     @classmethod
@@ -71,46 +89,14 @@ class Calendar(ModelSQL, ModelView):
         super(Calendar, cls).__setup__()
         t = cls.__table__()
         cls._sql_constraints = [
-            ('name_uniq', Unique(t, t.name),
+            ('name_uniq', Unique(t, t.name, t.owner),
                 'The name of calendar must be unique.'),
             ]
         cls._order.insert(0, ('name', 'ASC'))
 
-    @classmethod
-    def create(cls, vlist):
-        calendars = super(Calendar, cls).create(vlist)
-        # Restart the cache for get_name
-        cls._get_name_cache.clear()
-        return calendars
-
-    @classmethod
-    def write(cls, calendars, values, *args):
-        super(Calendar, cls).write(calendars, values, *args)
-        # Restart the cache for get_name
-        cls._get_name_cache.clear()
-
-    @classmethod
-    def delete(cls, calendars):
-        super(Calendar, cls).delete(calendars)
-        # Restart the cache for calendar
-        cls._get_name_cache.clear()
-
-    @classmethod
-    def get_name(cls, name):
-        '''
-        Return the calendar id of the name
-        '''
-        calendar_id = cls._get_name_cache.get(name, default=-1)
-        if calendar_id == -1:
-            calendars = cls.search([
-                ('name', '=', name),
-                ], limit=1)
-            if calendars:
-                calendar_id = calendars[0].id
-            else:
-                calendar_id = None
-            cls._get_name_cache.set(name, calendar_id)
-        return calendar_id
+    @staticmethod
+    def default_owner():
+        return Transaction().user
 
     def calendar2dates(self, from_date=datetime.date.today(),
                              to_date=datetime.date.today()+relativedelta.relativedelta(years=1)):
