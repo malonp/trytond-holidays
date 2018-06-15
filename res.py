@@ -25,10 +25,9 @@ from trytond.pool import PoolMeta
 
 
 __all__ = ['User']
-__metaclass__ = PoolMeta
 
 
-class User:
+class User(metaclass=PoolMeta):
     __name__ = 'res.user'
 
     calendars = fields.One2Many('holidays.calendar', 'owner', 'Calendars')

@@ -205,7 +205,8 @@ class Event(ModelSQL, ModelView):
 
     @classmethod
     def write(cls, *args):
-        cursor = Transaction().cursor
+        transaction = Transaction()
+        cursor = Transaction().connection.cursor()
 
         actions = iter(args)
         args = []
@@ -219,7 +220,7 @@ class Event(ModelSQL, ModelView):
 
         table = cls.__table__()
 
-        for sub_ids in grouped_slice(events, cursor.IN_MAX):
+        for sub_ids in grouped_slice(events, transaction.database.IN_MAX):
             red_sql = reduce_ids(table.id, sub_ids)
             cursor.execute(*table.update(
                     columns=[table.sequence],
