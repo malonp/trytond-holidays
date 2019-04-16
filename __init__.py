@@ -18,7 +18,7 @@ def register():
         EventRRule,
         EventExRule,
         User,
-        module='holidays', type_='model')
-    Pool.register(
-        OcurrencesList,
-        module='holidays', type_='report')
+        module='holidays',
+        type_='model',
+    )
+    Pool.register(OcurrencesList, module='holidays', type_='report')
