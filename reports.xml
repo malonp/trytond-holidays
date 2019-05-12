@@ -7,7 +7,7 @@ this repository contains the full copyright notices and license terms. -->
             <field name="name">Holidays List</field>
             <field name="model"></field>
             <field name="report_name">holidays.ocurrences_list</field>
-            <field name="report">holidays/report/calendar.ods</field>
+            <field name="report">holidays/report/calendar.fods</field>
             <field name="template_extension">ods</field>
         </record>
 

@@ -51,8 +51,12 @@ class OcurrencesList(Report):
 
         ocurrences = {}
         for c in calendaries:
-            ocurrences.update(c.calendar2dictdates(from_date=datetime.date.today()+relativedelta.relativedelta(month=1, day=1),
-                                                   to_date=datetime.date.today()+relativedelta.relativedelta(years=2)))
+            ocurrences.update(
+                c.calendar2dictdates(
+                    from_date=datetime.date.today() + relativedelta.relativedelta(month=1, day=1),
+                    to_date=datetime.date.today() + relativedelta.relativedelta(years=2),
+                )
+            )
 
         report_context['ocurrences'] = ocurrences
         report_context['title'] = ' '.join([r.name for r in records])
