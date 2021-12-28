@@ -20,20 +20,17 @@
 ##############################################################################
 
 
+import datetime
 import uuid
-from dateutil import rrule, relativedelta
-from dateutil.rrule import weekday, weekdays
 from itertools import groupby
 
-import datetime
-
+from dateutil import relativedelta, rrule
+from dateutil.rrule import weekday, weekdays
 from sql import Null
-
-from trytond.model import Model, ModelSQL, ModelView, fields, Check, Unique
-from trytond.tools import reduce_ids, grouped_slice
-from trytond.transaction import Transaction
+from trytond.model import Check, Model, ModelSQL, ModelView, Unique, fields
 from trytond.pool import Pool
-
+from trytond.tools import grouped_slice, reduce_ids
+from trytond.transaction import Transaction
 
 __all__ = [
     'Calendar',

@@ -20,12 +20,11 @@
 ##############################################################################
 
 
+import datetime
+
+from dateutil import relativedelta
 from trytond.pool import Pool
 from trytond.report import Report
-
-import datetime
-from dateutil import relativedelta
-
 
 __all__ = ['OcurrencesList']
 
