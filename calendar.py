@@ -25,7 +25,7 @@ import uuid
 from itertools import groupby
 
 from dateutil import relativedelta, rrule
-from dateutil.rrule import weekday, weekdays
+from dateutil.rrule import weekdays
 from sql import Null
 from trytond.model import Check, Model, ModelSQL, ModelView, Unique, fields
 from trytond.pool import Pool
